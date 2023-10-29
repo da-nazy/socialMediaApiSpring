@@ -144,7 +144,7 @@ public class UserRepositoryImpl implements UserRepository{
 
      }
      public void unfollow(Integer userId,Integer followerId){
-try{
+    try{
     System.out.println(userId+"user:follower"+followerId);
     User user=this.findById(userId);
     User follower=this.findById(followerId);
@@ -157,7 +157,7 @@ try{
         }
     }
 
-    System.out.println("user already remove if exist");
+
     follower.getFollowers().remove(userId.toString());
     user.getFollowings().remove(followerId.toString());
     System.out.println(follower.getFollowers());

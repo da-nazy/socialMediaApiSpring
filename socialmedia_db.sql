@@ -20,6 +20,7 @@ post_id integer primary key not null,
 user_id integer not null,
 title varchar(20) not null,
 content varchar(50) not null,
+like_count integer not null,
  creation_date bigint not null
 );
 
