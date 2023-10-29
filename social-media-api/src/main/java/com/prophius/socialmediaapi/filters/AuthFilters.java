@@ -31,8 +31,10 @@ public class AuthFilters  extends GenericFilterBean {
                             .parseClaimsJws(token).getBody();
                     // claims contains all user details set while generating token
                     // setting userId to the httpRequest object to be accessed from any where within the code
+
                     httpRequest.setAttribute("userId",Integer.parseInt(claims.get("userId").toString()));
                 }catch(Exception e){
+
                     httpResponse.sendError(HttpStatus.FORBIDDEN.value(),"invalid/expired token");
                     return;
                 }

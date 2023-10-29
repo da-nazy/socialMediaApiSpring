@@ -1,17 +1,18 @@
 package com.prophius.socialmediaapi.domain;
 
+
 import java.util.ArrayList;
 
 public class User {
     private Integer userId;
     private String userName;
     private String profilePicture;
-    private ArrayList<Integer> followers;
-    private ArrayList<Integer> followings;
+    private ArrayList<String> followers;
+    private ArrayList<String>  followings;
     private String email;
     private String password;
 
-    public User(Integer userId, String userName, String profilePicture, ArrayList<Integer> followers, ArrayList<Integer> followings, String email, String password) {
+    public User(Integer userId, String userName, String profilePicture, ArrayList<String>  followers, ArrayList<String>  followings, String email, String password) {
         this.userId = userId;
         this.userName = userName;
         this.profilePicture = profilePicture;
@@ -45,19 +46,19 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public ArrayList<Integer> getFollowers() {
+    public ArrayList<String>  getFollowers() {
         return followers;
     }
 
-    public void setFollowers(ArrayList<Integer> followers) {
+    public void setFollowers(ArrayList<String>  followers) {
         this.followers = followers;
     }
 
-    public ArrayList<Integer> getFollowings() {
+    public ArrayList<String>  getFollowings() {
         return followings;
     }
 
-    public void setFollowings(ArrayList<Integer> followings) {
+    public void setFollowings(ArrayList<String>  followings) {
         this.followings = followings;
     }
 
