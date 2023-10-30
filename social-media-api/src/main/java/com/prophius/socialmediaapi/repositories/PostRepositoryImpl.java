@@ -25,7 +25,7 @@ public class PostRepositoryImpl implements PostRepository{
     private static final String SQL_CREATE="INSERT INTO POSTS (POST_ID,USER_ID,TITLE,CONTENT,CREATION_DATE,LIKE_COUNT) VALUES(NEXTVAL('POSTS_SEQ'),?,?,?,?,?)";
 
     private static final String SQL_DELETE="DELETE FROM POSTS WHERE USER_ID=? AND POST_ID=?";
-    private static final String SQL_UPDATE_POST="UPDATE POSTS SET TITLE=?,CONTENT=? LIKE_COUNT=? WHERE USER_ID=? AND POST_ID=?";
+    private static final String SQL_UPDATE_POST="UPDATE POSTS SET TITLE=?,CONTENT=?,LIKE_COUNT=?,CREATION_DATE=? WHERE USER_ID=? AND POST_ID=?";
 
     private static final String SQL_LIKE_POST="UPDATE POSTS SET  LIKE_COUNT=? WHERE USER_ID=? AND POST_ID=?";
 
@@ -35,7 +35,7 @@ public class PostRepositoryImpl implements PostRepository{
     public Integer create(Integer userId, String title, String content, String creationDate,Integer likeCount) throws AuthException {
 
         try {
-            System.out.println(userId+title+content+creationDate+likeCount);
+
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
@@ -51,7 +51,7 @@ public class PostRepositoryImpl implements PostRepository{
 
 
         }catch (Exception e){
-            throw new BadRequestException(e.getMessage()+"POst failed");
+            throw new BadRequestException(e.getMessage());
         }
     }
 
@@ -65,9 +65,10 @@ public class PostRepositoryImpl implements PostRepository{
     }
 
     @Override
-    public void likePost(Integer postId, Integer userId,Integer likeCount) throws ResourceNotFoundException {
+    public void likePost(Integer postId, Integer userId) throws ResourceNotFoundException {
         try{
-            jdbcTemplate.update(SQL_LIKE_POST,new Object[]{likeCount,postId,userId});
+          Post post=this.getPost(postId,userId);
+            jdbcTemplate.update(SQL_LIKE_POST,new Object[]{post.getLikeCount()+1,postId,userId});
         }catch(Exception e){
             throw new BadRequestException(e.getMessage());
         }
@@ -92,7 +93,7 @@ public class PostRepositoryImpl implements PostRepository{
     @Override
     public void updatePost(Integer postId, Integer userId, String title, String content, String creationDate,Integer likeCount) throws ResourceNotFoundException {
         try{
-            jdbcTemplate.update(SQL_UPDATE_POST,new Object[]{title,content,likeCount,userId,postId});
+            jdbcTemplate.update(SQL_UPDATE_POST,new Object[]{title,content,likeCount,creationDate,userId,postId});
         }catch(Exception e){
             throw new BadRequestException(e.getMessage());
         }

@@ -25,11 +25,9 @@ public class PostResources {
         String content=(String) postMap.get("content");
         String title=(String) postMap.get("title");
         Integer userId=(Integer) postMap.get("userId");
-        Integer likeCount=(Integer) postMap.get("likeCount");
-        System.out.println(likeCount);
         String  creationDate=(String) postMap.get("creationDate");
         String dateIn = convertDateStringToMillis(creationDate);
-        Post post=postService.create(userId,title,content,dateIn,likeCount);
+        Post post=postService.create(userId,title,content,dateIn,0);
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
     @GetMapping("/{postId}")
@@ -40,16 +38,16 @@ public class PostResources {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Post>> getPosts(HttpServletRequest request, @PathVariable("postId") Integer postId){
+    public ResponseEntity<List<Post>> getPosts(HttpServletRequest request){
         int userId=(Integer) request.getAttribute("userId");
         List<Post> posts=postService.getPosts(userId);
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
     @PutMapping("/like/{postId}")
-    public ResponseEntity<Map<String,Boolean>> likePost(HttpServletRequest request,@PathVariable("postId") Integer postId,@RequestBody Map<String,Object> postMap){
+    public ResponseEntity<Map<String,Boolean>> likePost(HttpServletRequest request,@PathVariable("postId") Integer postId){
         int userId=(Integer) request.getAttribute("userId");
-        Integer likeCount=(Integer) postMap.get("likeCount");
-        postService.likePost(postId,userId,likeCount);
+     //   Integer likeCount=(Integer) postMap.get("likeCount");
+        postService.likePost(postId,userId);
         Map<String,Boolean> map=new HashMap<>();
         map.put("success",true);
         return new ResponseEntity<>(map,HttpStatus.OK);
@@ -84,7 +82,6 @@ public class PostResources {
 
         try {
             Date date = dateFormat.parse(dateString);
-            System.out.println(date.getTime()+"check danny");
             return date.toString();
         } catch (java.text.ParseException e) {
             e.printStackTrace();

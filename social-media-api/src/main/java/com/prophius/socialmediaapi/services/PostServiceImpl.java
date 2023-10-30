@@ -16,8 +16,8 @@ public class PostServiceImpl implements  PostService{
     @Autowired
     PostRepository postRepository;
     @Override
-    public void likePost(Integer postId, Integer userId,Integer likeCount) throws ResourceNotFoundException {
-        postRepository.likePost(postId,userId,likeCount);
+    public void likePost(Integer postId, Integer userId) throws ResourceNotFoundException {
+        postRepository.likePost(postId,userId);
     }
 
     @Override

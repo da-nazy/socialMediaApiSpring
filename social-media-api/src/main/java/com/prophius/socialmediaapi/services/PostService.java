@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface PostService {
 
-    void likePost(Integer postId,Integer userId,Integer likeCount) throws ResourceNotFoundException;
+    void likePost(Integer postId,Integer userId) throws ResourceNotFoundException;
     Post getPost(Integer postId,Integer userId) throws ResourceNotFoundException;
     List<Post> getPosts(Integer userId) throws ResourceNotFoundException;
 
