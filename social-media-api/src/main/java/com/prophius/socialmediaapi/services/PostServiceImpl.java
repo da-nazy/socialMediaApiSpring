@@ -1,13 +1,18 @@
 package com.prophius.socialmediaapi.services;
 
 import com.prophius.socialmediaapi.domain.Post;
+import com.prophius.socialmediaapi.dto.PostResponse;
 import com.prophius.socialmediaapi.exception.AuthException;
 import com.prophius.socialmediaapi.exception.ResourceNotFoundException;
 import com.prophius.socialmediaapi.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.awt.print.Pageable;
 import java.util.List;
 
 @Service
@@ -26,8 +31,18 @@ public class PostServiceImpl implements  PostService{
     }
 
     @Override
-    public List<Post> getPosts(Integer userId) throws ResourceNotFoundException {
-        return postRepository.getPosts(userId);
+    public PostResponse getPosts(Integer userId, Integer pageNo, Integer pageSize) throws ResourceNotFoundException {
+        Page<Post> posts=postRepository.getPosts(userId,pageNo,pageSize);
+        PostResponse response=new PostResponse();
+         response.setContent(posts.getContent());
+         response.setLast(posts.isLast());
+          long totalElement= (long) posts.getTotalElements();
+          response.setTotalElement(totalElement);
+          response.setTotalPages(posts.getTotalPages());
+          response.setPageNo(pageNo);
+          response.setPageSize(pageSize);
+
+        return response;
     }
 
     @Override

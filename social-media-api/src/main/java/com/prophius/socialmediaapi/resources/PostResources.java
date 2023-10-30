@@ -2,6 +2,7 @@ package com.prophius.socialmediaapi.resources;
 
 import com.prophius.socialmediaapi.domain.Post;
 import com.prophius.socialmediaapi.domain.User;
+import com.prophius.socialmediaapi.dto.PostResponse;
 import com.prophius.socialmediaapi.services.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,10 @@ public class PostResources {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Post>> getPosts(HttpServletRequest request){
+    public ResponseEntity<PostResponse> getPosts(HttpServletRequest request,@RequestParam(value="pageNo",defaultValue="0",required=false) int pageNo,
+                                                 @RequestParam(value="pageSize",defaultValue="5",required=false) int pageSize){
         int userId=(Integer) request.getAttribute("userId");
-        List<Post> posts=postService.getPosts(userId);
+        PostResponse posts=postService.getPosts(userId,pageNo,pageSize);
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
     @PutMapping("/like/{postId}")

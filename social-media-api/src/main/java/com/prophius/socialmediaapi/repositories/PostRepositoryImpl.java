@@ -6,6 +6,9 @@ import com.prophius.socialmediaapi.exception.BadRequestException;
 import com.prophius.socialmediaapi.exception.ResourceNotFoundException;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -86,9 +89,22 @@ public class PostRepositoryImpl implements PostRepository{
     }
 
     @Override
-    public List<Post> getPosts(Integer userId) throws ResourceNotFoundException {
-        return jdbcTemplate.query(SQL_FIND_POSTS,new Object[]{userId},postRowMapper);
+    public Page<Post> getPosts(Integer userId, int page, int size) throws ResourceNotFoundException {
+        int offset = page * size;
+        String sql = "SELECT * FROM POSTS WHERE user_id = ? LIMIT ? OFFSET ?";
+        List<Post> posts = jdbcTemplate.query(sql, new Object[]{userId, size, offset}, postRowMapper);
+
+        // You should count the total number of posts for the user to calculate the total pages
+        String countSql = "SELECT COUNT(*) FROM POSTS WHERE user_id = ?";
+        int totalPosts = jdbcTemplate.queryForObject(countSql, Integer.class, userId);
+
+        return new PageImpl<>(posts, PageRequest.of(page, size), totalPosts);
     }
+    /**
+     * public List<Post> getPosts(Integer userId) throws ResourceNotFoundException {
+     *         return jdbcTemplate.query(SQL_FIND_POSTS,new Object[]{userId},postRowMapper);
+     *     }
+     */
 
     @Override
     public void updatePost(Integer postId, Integer userId, String title, String content, String creationDate,Integer likeCount) throws ResourceNotFoundException {
