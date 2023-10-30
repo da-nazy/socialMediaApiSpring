@@ -9,10 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -21,13 +20,16 @@ public class PostResources {
   PostService postService;
     @PostMapping("")
     public ResponseEntity<Post> createPost(@RequestBody Map<String,Object> postMap){
+
+
         String content=(String) postMap.get("content");
         String title=(String) postMap.get("title");
         Integer userId=(Integer) postMap.get("userId");
         Integer likeCount=(Integer) postMap.get("likeCount");
         System.out.println(likeCount);
-        long  creationDate=(long) postMap.get("creationDate");
-        Post post=postService.create(userId,title,content,creationDate,likeCount);
+        String  creationDate=(String) postMap.get("creationDate");
+        String dateIn = convertDateStringToMillis(creationDate);
+        Post post=postService.create(userId,title,content,dateIn,likeCount);
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
     @GetMapping("/{postId}")
@@ -58,9 +60,10 @@ public class PostResources {
         int userId=(Integer) request.getAttribute("userId");
         String title=(String) postMap.get("title");
         String content=(String) postMap.get("content");
-        long creationDate=(long) postMap.get("creationDate");
+        String creationDate=(String) postMap.get("creationDate");
         Integer likeCount=(Integer) postMap.get("likeCount");
-        postService.updatePost(postId,userId,title,content,creationDate,likeCount);
+        String dateIn = convertDateStringToMillis(creationDate);
+        postService.updatePost(postId,userId,title,content,dateIn,likeCount);
         Map<String,Boolean> map=new HashMap<>();
         map.put("success",true);
         return new ResponseEntity<>(map,HttpStatus.OK);
@@ -75,4 +78,21 @@ public class PostResources {
         return new ResponseEntity<>(map,HttpStatus.OK);
     }
 
+
+    private static String convertDateStringToMillis(String dateString) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+
+        try {
+            Date date = dateFormat.parse(dateString);
+            System.out.println(date.getTime()+"check danny");
+            return date.toString();
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+             // Return a default value or handle the exception as needed
+        }
+        return dateString;
+    }
+
 }
+
+

@@ -22,7 +22,7 @@ public class PostRepositoryImpl implements PostRepository{
 
     private static final String SQL_FIND_POSTS="SELECT * FROM POSTS WHERE USER_ID=? ";
     private static final String SQL_FIND_POST="SELECT * FROM POSTS WHERE USER_ID=? AND POST_ID=?";
-    private static final String SQL_CREATE="INSERT INTO POSTS(POST_ID,USER_ID,TITLE,CONTENT,CREATION_DATE,LIKE_COUNT) VALUES(NEXTVAL('POSTS_SEQ'),?,?,?,?,?)";
+    private static final String SQL_CREATE="INSERT INTO POSTS (POST_ID,USER_ID,TITLE,CONTENT,CREATION_DATE,LIKE_COUNT) VALUES(NEXTVAL('POSTS_SEQ'),?,?,?,?,?)";
 
     private static final String SQL_DELETE="DELETE FROM POSTS WHERE USER_ID=? AND POST_ID=?";
     private static final String SQL_UPDATE_POST="UPDATE POSTS SET TITLE=?,CONTENT=? LIKE_COUNT=? WHERE USER_ID=? AND POST_ID=?";
@@ -32,7 +32,7 @@ public class PostRepositoryImpl implements PostRepository{
     @Autowired
     JdbcTemplate jdbcTemplate;
     @Override
-    public Integer create(Integer userId, String title, String content, long creationDate,Integer likeCount) throws AuthException {
+    public Integer create(Integer userId, String title, String content, String creationDate,Integer likeCount) throws AuthException {
 
         try {
             System.out.println(userId+title+content+creationDate+likeCount);
@@ -42,8 +42,8 @@ public class PostRepositoryImpl implements PostRepository{
                 ps.setInt(1, userId);
                 ps.setString(2, title);
                 ps.setString(3, content);
-                ps.setInt(4, likeCount);
-                ps.setLong(5,creationDate);
+                ps.setString(4, creationDate);
+                ps.setInt(5,likeCount);
                 return ps;
             }, keyHolder);
 
@@ -90,7 +90,7 @@ public class PostRepositoryImpl implements PostRepository{
     }
 
     @Override
-    public void updatePost(Integer postId, Integer userId, String title, String content, long creationDate,Integer likeCount) throws ResourceNotFoundException {
+    public void updatePost(Integer postId, Integer userId, String title, String content, String creationDate,Integer likeCount) throws ResourceNotFoundException {
         try{
             jdbcTemplate.update(SQL_UPDATE_POST,new Object[]{title,content,likeCount,userId,postId});
         }catch(Exception e){
@@ -105,7 +105,7 @@ public class PostRepositoryImpl implements PostRepository{
                 rs.getInt("USER_ID"),
                 rs.getString("TITLE"),
                 rs.getString("CONTENT"),
-                rs.getLong("CREATION_DATE"),
+                rs.getString("CREATION_DATE"),
                 rs.getInt("LIKE_COUNT")
         );
     });

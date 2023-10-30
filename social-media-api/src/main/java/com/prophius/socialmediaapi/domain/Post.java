@@ -5,10 +5,10 @@ private Integer postId;
 private Integer userId;
 private String title;
 private String content;
-private long creationDate;
+private String creationDate;
 private Integer likeCount;
 
-    public Post(Integer postId, Integer userId, String title, String content, long creationDate, Integer likeCount) {
+    public Post(Integer postId, Integer userId, String title, String content, String creationDate, Integer likeCount) {
         this.postId = postId;
         this.userId = userId;
         this.title = title;
@@ -49,11 +49,11 @@ private Integer likeCount;
         this.content = content;
     }
 
-    public long getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(long creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 

@@ -21,7 +21,7 @@ user_id integer not null,
 title varchar(20) not null,
 content varchar(50) not null,
 like_count integer not null,
- creation_date bigint not null
+ creation_date text not null
 );
 
 alter table posts add constraint post_users_fk
@@ -32,7 +32,7 @@ create table comments(
  post_id integer not null,
  user_id integer not null,
  content varchar(50) not null,
- creation_date bigint not null
+ creation_date text not null
 );
 
 alter table comments add constraint comments_post_fk

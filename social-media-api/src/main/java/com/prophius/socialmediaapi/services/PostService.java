@@ -14,7 +14,7 @@ public interface PostService {
     Post getPost(Integer postId,Integer userId) throws ResourceNotFoundException;
     List<Post> getPosts(Integer userId) throws ResourceNotFoundException;
 
-    Post create (Integer userId, String title, String content, long creationDate,Integer likeCount) throws AuthException;
+    Post create (Integer userId, String title, String content, String creationDate,Integer likeCount) throws AuthException;
     void removePost(Integer postId,Integer userId) throws ResourceNotFoundException;
-    void updatePost(Integer postId, Integer userId,String title, String content, long creationDate,Integer likeCount) throws ResourceNotFoundException;
+    void updatePost(Integer postId, Integer userId,String title, String content, String creationDate,Integer likeCount) throws ResourceNotFoundException;
 }

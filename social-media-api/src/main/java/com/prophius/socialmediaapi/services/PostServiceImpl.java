@@ -31,7 +31,7 @@ public class PostServiceImpl implements  PostService{
     }
 
     @Override
-    public Post create(Integer userId, String title, String content, long creationDate, Integer likeCount) throws AuthException {
+    public Post create(Integer userId, String title, String content, String creationDate, Integer likeCount) throws AuthException {
         int postId=postRepository.create(userId,title,content,creationDate,likeCount);
         return postRepository.getPost(postId,userId);
     }
@@ -42,7 +42,7 @@ public class PostServiceImpl implements  PostService{
     }
 
     @Override
-    public void updatePost(Integer postId, Integer userId, String title, String content, long creationDate,Integer likeCount) throws ResourceNotFoundException {
+    public void updatePost(Integer postId, Integer userId, String title, String content,String creationDate,Integer likeCount) throws ResourceNotFoundException {
         postRepository.updatePost(postId,userId,title,content,creationDate,likeCount);
     }
 }
