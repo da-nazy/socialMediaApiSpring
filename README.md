@@ -1,7 +1,10 @@
 # socialMediaApiSpring
 used postgres sql
  worked on user crud
- post crud ,post like,comment crud
+ post crud ,
+ post like,
+ post comment,
+ comment crud
  user authentication
  post pagination
  user follow and unfollow
